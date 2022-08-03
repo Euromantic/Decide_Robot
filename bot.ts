@@ -38,11 +38,8 @@ const capitalizeFirstLetter = (str: string): string =>
 const yesOrNo = (): string => choice(yesOrNoOptions);
 const roulette = (): string => choice(rouletteOptions);
 const elk = (): string => choice(elkOptions);
-const formatQuery = (query: string): string => {
-  query = query.trim();
-  while (query.endsWith("?")) query = query.substring(0, query.length - 1);
-  return capitalizeFirstLetter(query);
-};
+const formatQuery = (query: string): string => capitalizeFirstLetter(query.replace('?', '').trim());
+
 
 function generateInlineReply(
   title: string,
@@ -74,6 +71,9 @@ bot.inlineQuery(/.*( или .*)+/, async (ctx) => {
       options.join(" или "),
       choice(options),
     ),
+    generateInlineReply("Да или нет?", query, yesOrNo()),
+    generateInlineReply("Рулетка.", query, roulette()),
+    generateInlineReply("Сакральный олень.", query, elk()),
   ], { cache_time: 0 });
 });
 
