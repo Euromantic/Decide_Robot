@@ -1,0 +1,1 @@
+worker: deno task run
