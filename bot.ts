@@ -3,6 +3,7 @@ import { Bot } from "https://deno.land/x/grammy@v1.10.1/mod.ts";
 import { InlineQueryResult } from "https://deno.land/x/grammy@v1.10.1/platform.deno.ts";
 
 const token = Deno.env.get("DECIDE_ROBOT_TOKEN");
+const pic_id = Deno.env.get("REPLY_PIC_ID");
 
 if (token === undefined || token === null) {
   console.warn("Bot token is not set. Aborting...");
@@ -38,8 +39,8 @@ const capitalizeFirstLetter = (str: string): string =>
 const yesOrNo = (): string => choice(yesOrNoOptions);
 const roulette = (): string => choice(rouletteOptions);
 const elk = (): string => choice(elkOptions);
-const formatQuery = (query: string): string => capitalizeFirstLetter(query.replace('?', '').trim());
-
+const formatQuery = (query: string): string =>
+  capitalizeFirstLetter(query.replace("?", "").trim());
 
 function generateInlineReply(
   title: string,
@@ -90,6 +91,18 @@ bot.on("inline_query", async (ctx) => {
     generateInlineReply("Сакральный олень.", query, elk()),
   ], { cache_time: 0 });
 });
+
+const sosat_regex = /русня ?([--—] ?)?сосать/;
+
+if (typeof pic_id === 'string') {
+  bot.on("message:text", async (ctx) => {
+    if (sosat_regex.test(ctx.msg.text)) {
+      await bot.api.sendSticker(ctx.chat.id, pic_id, {
+        reply_to_message_id: ctx.msg.message_id,
+      });
+    }
+  });
+}
 
 await bot.init();
 console.log(`${bot.botInfo.username} is running...`);
