@@ -40,7 +40,7 @@ const yesOrNo = (): string => choice(yesOrNoOptions);
 const roulette = (): string => choice(rouletteOptions);
 const elk = (): string => choice(elkOptions);
 const formatQuery = (query: string): string =>
-  capitalizeFirstLetter(query.replace("?", "").trim());
+  capitalizeFirstLetter(query.replaceAll("?", "").trim());
 
 function generateInlineReply(
   title: string,
@@ -92,11 +92,11 @@ bot.on("inline_query", async (ctx) => {
   ], { cache_time: 0 });
 });
 
-const sosat_regex = /русня ?([--—] ?)?сосать/;
+const sosat_regex = /[рp][уy][сc]ня ?([--—] ?)?[сc][oо][cс][aа]ть/;
 
 if (typeof pic_id === 'string') {
   bot.on("message:text", async (ctx) => {
-    if (sosat_regex.test(ctx.msg.text)) {
+    if (sosat_regex.test(ctx.msg.text.toLowerCase())) {
       await bot.api.sendSticker(ctx.chat.id, pic_id, {
         reply_to_message_id: ctx.msg.message_id,
       });
