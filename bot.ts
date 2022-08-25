@@ -92,7 +92,7 @@ bot.on("inline_query", async (ctx) => {
   ], { cache_time: 0 });
 });
 
-const sosat_regex = /[рp][уy][сc][hн]я ?([--—] ?)?[сc][oо][cс][aа][tт][бь]/;
+const sosat_regex = /[рp][уy][сc][hн]я ?([--—] ?)?[сc][oо][cс][aа][tт][бь]?/;
 
 if (typeof pic_id === 'string') {
   bot.on("message:text", async (ctx) => {
